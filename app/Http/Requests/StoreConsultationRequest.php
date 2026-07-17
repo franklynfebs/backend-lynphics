@@ -47,12 +47,19 @@ class StoreConsultationRequest extends FormRequest
             'string',
             'max:100'
         ],
+ 'consultation_interests' => ['required', 'array', 'min:1'],
 
-        'interests.*.interest' => [
-            'required',
-            'string',
-            'max:255'
-        ],
+'consultation_interests.*.category' => [
+    'required',
+    'string',
+    'max:100'
+],
+
+'consultation_interests.*.interest' => [
+    'required',
+    'string',
+    'max:255'
+],
     ];
 }
 
@@ -66,8 +73,8 @@ public function messages(): array
         'email.email' => 'Enter a valid email address.',
         'phone.required' => 'Phone number is required.',
 
-        'interests.required' => 'Select at least one area of improvement.',
-        'interests.min' => 'Select at least one area of improvement.',
+        'consultation_interests.required' => 'Select at least one area of improvement.',
+        'consultation_interests.min' => 'Select at least one area of improvement.',
     ];
 }
 }
