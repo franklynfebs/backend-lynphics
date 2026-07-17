@@ -33,14 +33,14 @@ class ConsultationService
             ]);
 
             // Store selected interests
-            foreach ($data['interests'] as $interest) {
+foreach ($data['consultation_interests'] ?? [] as $interest) {
 
-                ConsultationInterest::create([
-                    'consultation_request_id' => $consultation->id,
-                    'category' => $interest['category'],
-                    'interest' => $interest['interest'],
-                ]);
-            }
+    ConsultationInterest::create([
+        'consultation_request_id' => $consultation->id,
+        'category' => $interest['category'],
+        'interest' => $interest['interest'],
+    ]);
+}
 
             return $consultation->load('consultationInterests');
         });
