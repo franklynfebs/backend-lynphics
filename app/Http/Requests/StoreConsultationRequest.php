@@ -21,61 +21,52 @@ class StoreConsultationRequest extends FormRequest
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-{
-    return [
-        'full_name' => ['required', 'string', 'max:150'],
-        'business_name' => ['required', 'string', 'max:150'],
-        'email' => ['required', 'email', 'max:255'],
-        'phone' => ['required', 'string', 'max:50'],
+    {
+        return [
+            'full_name' => ['required', 'string', 'max:150'],
+            'business_name' => ['required', 'string', 'max:150'],
+            'email' => ['required', 'email', 'max:255'],
+            'phone' => ['required', 'string', 'max:50'],
 
-        'industry' => ['nullable', 'string', 'max:100'],
-        'company_size' => ['nullable', 'string', 'max:50'],
-        'website' => ['nullable', 'url', 'max:255'],
+            'industry' => ['nullable', 'string', 'max:100'],
+            'company_size' => ['nullable', 'string', 'max:50'],
+            'website' => ['nullable', 'url', 'max:255'],
 
-        'business_challenge' => ['nullable', 'string'],
+            'business_challenge' => ['nullable', 'string'],
 
-        'investment_range' => ['nullable', 'string', 'max:100'],
-        'timeline' => ['nullable', 'string', 'max:50'],
+            'investment_range' => ['nullable', 'string', 'max:100'],
+            'timeline' => ['nullable', 'string', 'max:50'],
 
-        'preferred_contact_method' => ['nullable', 'string', 'max:50'],
-        'referral_source' => ['nullable', 'string', 'max:100'],
+            'preferred_contact_method' => ['nullable', 'string', 'max:50'],
+            'referral_source' => ['nullable', 'string', 'max:100'],
 
-        'consultation_interests' => ['required', 'array', 'min:1'],
+            'consultation_interests' => ['required', 'array', 'min:1'],
 
-        'consultation_interests.*.category' => [
-            'required',
-            'string',
-            'max:100'
-        ],
-        
-'consultation_interests' => ['required', 'array', 'min:1'],
+            'consultation_interests.*.category' => [
+                'required',
+                'string',
+                'max:100',
+            ],
 
-'consultation_interests.*.category' => [
-    'required',
-    'string',
-    'max:100'
-],
+            'consultation_interests.*.interest' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+        ];
+    }
 
-'consultation_interests.*.interest' => [
-    'required',
-    'string',
-    'max:255'
-],    
-    ];
-}
+    public function messages(): array
+    {
+        return [
+            'full_name.required' => 'Full name is required.',
+            'business_name.required' => 'Business name is required.',
+            'email.required' => 'Email address is required.',
+            'email.email' => 'Enter a valid email address.',
+            'phone.required' => 'Phone number is required.',
 
-
-public function messages(): array
-{
-    return [
-        'full_name.required' => 'Full name is required.',
-        'business_name.required' => 'Business name is required.',
-        'email.required' => 'Email address is required.',
-        'email.email' => 'Enter a valid email address.',
-        'phone.required' => 'Phone number is required.',
-
-        'consultation_interests.required' => 'Select at least one area of improvement.',
-        'consultation_interests.min' => 'Select at least one area of improvement.',
-    ];
-}
+            'consultation_interests.required' => 'Select at least one area of improvement.',
+            'consultation_interests.min' => 'Select at least one area of improvement.',
+        ];
+    }
 }
