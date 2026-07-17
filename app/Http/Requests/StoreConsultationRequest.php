@@ -40,14 +40,15 @@ class StoreConsultationRequest extends FormRequest
         'preferred_contact_method' => ['nullable', 'string', 'max:50'],
         'referral_source' => ['nullable', 'string', 'max:100'],
 
-        'interests' => ['required', 'array', 'min:1'],
+        'consultation_interests' => ['required', 'array', 'min:1'],
 
-        'interests.*.category' => [
+        'consultation_interests.*.category' => [
             'required',
             'string',
             'max:100'
         ],
- 'consultation_interests' => ['required', 'array', 'min:1'],
+        
+'consultation_interests' => ['required', 'array', 'min:1'],
 
 'consultation_interests.*.category' => [
     'required',
@@ -59,7 +60,7 @@ class StoreConsultationRequest extends FormRequest
     'required',
     'string',
     'max:255'
-],
+],    
     ];
 }
 
