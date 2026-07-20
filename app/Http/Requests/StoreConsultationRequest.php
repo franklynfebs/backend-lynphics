@@ -69,4 +69,5 @@ class StoreConsultationRequest extends FormRequest
             'consultation_interests.min' => 'Select at least one area of improvement.',
         ];
     }
+    
 }

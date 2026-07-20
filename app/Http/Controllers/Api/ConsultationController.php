@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreConsultationRequest;
 use App\Services\ConsultationService;
 use Illuminate\Http\JsonResponse;
+use App\Mail\ConsultationSubmitted;
+use Illuminate\Support\Facades\Mail;
 
 class ConsultationController extends Controller
 {
