@@ -25,10 +25,17 @@ class ConsultationController extends Controller
             $request->validated()
         );
 
+        // Load the relationship used by the Blade template
+        $consultation->load('consultationInterests');
+
+        // Send confirmation email to the client
+        Mail::to($consultation->email)
+            ->send(new ConsultationSubmitted($consultation));
+
         return response()->json([
             'success' => true,
             'message' => 'Consultation request submitted successfully.',
             'data' => $consultation,
         ], 201);
     }
-    }
+}
