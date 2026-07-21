@@ -31,4 +31,4 @@ class ConsultationController extends Controller
             'data' => $consultation,
         ], 201);
     }
-}
+    }
