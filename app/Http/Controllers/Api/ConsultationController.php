@@ -21,31 +21,41 @@ class ConsultationController extends Controller
      * Store a new consultation request.
      */
     public function store(StoreConsultationRequest $request): JsonResponse
-{
-    Log::info('Controller reached.');
+    {
+        $consultation = $this->consultationService->create(
+            $request->validated()
+        );
 
-    $consultation = $this->consultationService->create(
-        $request->validated()
-    );
+        // Load the relationship used by the Blade template
+        $consultation->load('consultationInterests');
 
-    Log::info('Consultation created.', [
-        'id' => $consultation->id,
-        'email' => $consultation->email,
-    ]);
+        Log::info('Starting consultation confirmation email.', [
+            'consultation_id' => $consultation->id,
+            'recipient' => $consultation->email,
+        ]);
 
-    $consultation->load('consultationInterests');
+        try {
+            // Send confirmation email to the client
+            Mail::to($consultation->email)
+                ->send(new ConsultationSubmitted($consultation));
 
-    Log::info('About to send email.');
+            Log::info('Consultation confirmation email sent successfully.', [
+                'consultation_id' => $consultation->id,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('Failed to send consultation confirmation email.', [
+                'consultation_id' => $consultation->id,
+                'recipient' => $consultation->email,
+                'error' => $e->getMessage(),
+            ]);
 
-    Mail::to($consultation->email)
-        ->send(new ConsultationSubmitted($consultation));
+            throw $e;
+        }
 
-    Log::info('Mail::send finished.');
-
-    return response()->json([
-        'success' => true,
-        'message' => 'Consultation submitted successfully.',
-        'data' => $consultation,
-    ], 201);
-}
+        return response()->json([
+            'success' => true,
+            'message' => 'Consultation request submitted successfully.',
+            'data' => $consultation,
+        ], 201);
+    }
 }
