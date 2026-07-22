@@ -21,41 +21,31 @@ class ConsultationController extends Controller
      * Store a new consultation request.
      */
     public function store(StoreConsultationRequest $request): JsonResponse
-    {
-        $consultation = $this->consultationService->create(
-            $request->validated()
-        );
+{
+    Log::info('Controller reached.');
 
-        // Load the relationship used by the Blade template
-        $consultation->load('consultationInterests');
+    $consultation = $this->consultationService->create(
+        $request->validated()
+    );
 
-        Log::info('Starting consultation confirmation email.', [
-            'consultation_id' => $consultation->id,
-            'recipient' => $consultation->email,
-        ]);
+    Log::info('Consultation created.', [
+        'id' => $consultation->id,
+        'email' => $consultation->email,
+    ]);
 
-        try {
-            // Send confirmation email to the client
-            Mail::to($consultation->email)
-                ->send(new ConsultationSubmitted($consultation));
+    $consultation->load('consultationInterests');
 
-            Log::info('Consultation confirmation email sent successfully.', [
-                'consultation_id' => $consultation->id,
-            ]);
-        } catch (\Throwable $e) {
-            Log::error('Failed to send consultation confirmation email.', [
-                'consultation_id' => $consultation->id,
-                'recipient' => $consultation->email,
-                'error' => $e->getMessage(),
-            ]);
+    Log::info('About to send email.');
 
-            throw $e;
-        }
+    Mail::to($consultation->email)
+        ->send(new ConsultationSubmitted($consultation));
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Consultation request submitted successfully.',
-            'data' => $consultation,
-        ], 201);
-    }
+    Log::info('Mail::send finished.');
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Consultation submitted successfully.',
+        'data' => $consultation,
+    ], 201);
+}
 }
